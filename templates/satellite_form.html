@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+            <div class="row g-3 mt-5 mb-5 justify-content-center">
+                <h2 class="my-heading text-center mb-3">Классификация спутниковых снимков</h2>
+                <div class="col-md-5">
+                    <div class="card shadow-sm p-4">
+                        <p>Загрузите спутниковый снимок (желательный формат 180x180)</p>
+                        <p>Доступные классы: {{ classes|join(', ') }}</p>
+                        <form action="/predict" method="post" enctype="multipart/form-data">
+                            <input type="file" name="file" accept="image/*" required>
+                            <br><br>
+                            <button type="submit" class="btn btn-outline-success w-100 mt-3">Распознать изображение</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+{% endblock %}

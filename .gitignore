@@ -1,0 +1,16 @@
+.idea
+venv
+.env
+.venv
+env/
+venv/
+ENV/
+env_name/
+env.bak/
+venv.bak/
+
+
+
+__pycache__/
+*.py[cod]
+*$py.class
