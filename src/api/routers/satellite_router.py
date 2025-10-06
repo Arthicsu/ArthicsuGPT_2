@@ -13,7 +13,7 @@ router = APIRouter()
 
 templates = Jinja2Templates(directory="templates")
 
-model_path = "src/models/satellite_model_v2_3.h5"
+model_path = "src/models/satellite_model.h5"
 classes_path = "src/models/satellite_classes.json"
 if os.path.exists(model_path) and os.path.exists(classes_path):
     try:
