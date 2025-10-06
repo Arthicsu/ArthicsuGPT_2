@@ -50,7 +50,7 @@ async def predict_display(
         contents = await file.read()
         img = Image.open(io.BytesIO(contents)).convert('RGB')
 
-        img = img.resize((180, 180))
+        img = img.resize((224, 224))
 
         # Конвертируем в массив numpy
         img_array = image.img_to_array(img)

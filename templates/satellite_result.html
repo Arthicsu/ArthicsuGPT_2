@@ -17,7 +17,7 @@
                     <h3>Все вероятности:</h3>
                     {% for pred in all_predictions %}
                         <div class="prediction-bar">
-                            <div>{{ pred.class }} ({{ pred.name }}): {{ pred.prob }}%</div>
+                            <div>({{ pred.name }}): {{ pred.prob }}%</div>
                             <div class="bar-fill" style="width: {{ pred.prob }}%"></div>
                         </div>
                     {% endfor %}
