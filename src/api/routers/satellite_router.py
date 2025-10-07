@@ -37,7 +37,6 @@ async def show_form(request: Request):
     return templates.TemplateResponse("satellite_form.html", {
         "request": request,
         "classes": class_names,
-        "model_loaded": model is not None,
         "title": "Распознавание спутниковых снимков"
     })
 
