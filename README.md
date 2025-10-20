@@ -1,13 +1,18 @@
 [![Python Version](https://img.shields.io/badge/python-3.11%2B-blue)]()
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.9%2B-red)]()
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.119%2B-green)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)]()
-# ArthicsuGPT - Классификация спутниковых снимков
+# PyTorch-FastAPI - Классификация спутниковых снимков
 
 <div align="center"><img width="554" height="506" alt="image" class="alig" src="https://github.com/user-attachments/assets/b921f833-7181-4615-a74e-1b155642ebc2" /></div>
 
-
 ## Краткое описание
-- ArthicsuGPT — это веб-приложение для классификации спутниковых снимков. 
-- Приложение использует нейронную сеть для определения категории спутниковых снимков.<br>
+- PyTorch-FastAPI — это высокопроизводительное веб-приложение для классификации спутниковых снимков на основе PyTorch.
+- Приложение использует сверточную нейронную сеть (CNN), обученную на PyTorch, для точного определения категорий спутниковых снимков.
+
+## Особенности
+- **Асинхронная обработка**: Оптимизированная работа с изображениями
+
 
 
 ## Установка
