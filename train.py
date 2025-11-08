@@ -2,13 +2,12 @@ import tensorflow as tf
 from tensorflow import keras
 from keras import layers
 
-
 # Настройки
 data_dir = "static/assets/satellite_photos"
 img_height = 224
 img_width = 224
 batch_size = 32
-epochs = 10
+epochs = 15
 
 # Создание датасетов
 train_ds = tf.keras.utils.image_dataset_from_directory(
@@ -39,19 +38,23 @@ AUTOTUNE = tf.data.AUTOTUNE
 train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
 val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
-# Загрузка предобученной модели MobileNetV2
-base_model = tf.keras.applications.MobileNetV2(
+# Загрузка предобученной модели VGG16
+base_model = tf.keras.applications.VGG16(
     weights='imagenet',
     include_top=False,
     input_shape=(img_height, img_width, 3)
 )
 
-base_model.trainable = False
+base_model.trainable = True
+
+# Замораживаем всё, кроме последних 5 слоев
+for layer in base_model.layers[:-5]:
+    layer.trainable = False
 
 # ДИАГНОСТИКА: посчитаем сколько слоев обучается
 trainable_count = sum([1 for layer in base_model.layers if layer.trainable])
 total_count = len(base_model.layers)
-print(f"Обучается {trainable_count}/{total_count} слоев MobileNetV2")
+print(f"Обучается {trainable_count}/{total_count} слоев VGG16")
 
 # Создание модели с переносом обучения
 model = keras.Sequential([
@@ -59,6 +62,7 @@ model = keras.Sequential([
     layers.GlobalAveragePooling2D(),
     layers.Dropout(0.3),
     layers.Dense(128, activation='relu'),
+    layers.BatchNormalization(),
     layers.Dropout(0.2),
     layers.Dense(num_classes, activation='softmax')
 ])
@@ -80,5 +84,5 @@ history = model.fit(
 )
 
 # Сохранение модели
-model.save('src/models/satellite_model_MobileNetV2_transfer.h5')
-print("Модель с переносом обучения сохранена как 'satellite_model_MobileNetV2_transfer.h5'")
+model.save('src/models/satellite_model_VGG16_transfer.h5')
+print("Модель с переносом обучения сохранена как 'satellite_model_VGG16_transfer.h5'")

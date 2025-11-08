@@ -1,18 +1,19 @@
-# MobileNetV2-FastAPI - Классификация спутниковых снимков
+# VGG16-FastAPI - Классификация спутниковых снимков
 [![Python Version](https://img.shields.io/badge/python-3.11%2B-blue)]()
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.20-red)]()
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.119%2B-green)]()
 <br>
-[![MobileNetV2](https://img.shields.io/badge/MobileNetV2-orange)]()
+[![VGG16](https://img.shields.io/badge/VGG16-green)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)]()
 <div align="center"><img width="554" height="506" alt="image" class="idk" src="https://github.com/user-attachments/assets/b921f833-7181-4615-a74e-1b155642ebc2" /></div>
 
 ## Краткое описание
-- MobileNetV2-FastAPI — это высокопроизводительное веб-приложение для классификации спутниковых снимков на основе предобученной модели MobileNetV2.
-- Приложение использует сверточную нейронную сеть (CNN), обученную на TensorFlow, для точного определения категорий спутниковых снимков.
+- VGG16-FastAPI — это высокопроизводительное веб-приложение для классификации спутниковых снимков на основе предобученной модели VGG16.
+- Приложение использует предобученную модель VGG16, которая теперь классифицирует спутниковые снимки.
 
 ## Особенности
 - **Асинхронная обработка**: Оптимизированная работа с изображениями
+- **Я долго модель дообучал** - 20 эпох как никак
 
 ## Установка
 > Для работы приложения требуется Python 3.11

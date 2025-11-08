@@ -15,7 +15,7 @@ import io, json, os
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
-model_path = "src/models/satellite_model_MobileNetV2_transfer.h5"
+model_path = "src/models/satellite_model_VGG16_transfer.h5"
 classes_path = "src/models/satellite_classes.json"
 
 if os.path.exists(model_path) and os.path.exists(classes_path):
@@ -48,13 +48,12 @@ async def predict_display(
         contents = await file.read()
         img = Image.open(io.BytesIO(contents)).convert('RGB')
 
-        # Изменение размера до 224x224 (как требует MobileNetV2)
+        # Изменение размера до 224x224
         img = img.resize((224, 224))
 
         # Конвертируем в массив numpy
         img_array = image.img_to_array(img)
 
-        # Предобработка для MobileNetV2
         img_array = preprocess_input(img_array)
 
         # Добавляем размерности: (1, 224, 224, 3)
