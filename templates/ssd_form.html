@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+            <div class="row g-3 mt-5 mb-5 justify-content-center">
+                <h2 class="my-heading text-center mb-3">Детектирование объектов на изображении</h2>
+                <div class="col-md-5">
+                    <div class="card shadow-sm p-3">
+                        <h4 class="mb-1">Доступные классы:</h4>
+                        <small class="text-muted">Нажмите на класс, чтобы добавить его в поиск</small>
+
+                        <div class="border rounded p-2 mt-3" style="max-height: 220px; overflow-y: auto;">
+                            <div class="row row-cols-2 row-cols-md-3 g-2">
+                                {% for class_name in classes %}
+                                <div class="col">
+                                    <div class="d-flex align-items-center px-1 py-1 border rounded"
+                                         style="cursor:pointer;"
+                                         onclick="addClassToInput('{{ class_name }}')">
+                                        {{ class_name }}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Центральная колонка — загрузка изображения -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm p-3">
+                        <h5>Загрузите изображение</h5>
+
+                        <form class="upload-form" action="/predict" method="post" enctype="multipart/form-data">
+
+                            <div class="mb-3">
+                                <label class="form-label">* Выберите файл:</label>
+                                <input type="file" class="form-control" name="file" accept="image/*" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="threshold" class="form-label">* Порог уверенности (%):</label>
+                                <input type="number" class="form-control"
+                                       name="threshold" id="threshold"
+                                       min="1" max="100" value="{{ default_threshold }}">
+                                <small class="text-muted">От 1% до 100% (рекомендуется 30–70%)</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Фильтр по классам (необязательно):</label>
+                                <input type="text" class="form-control"
+                                       name="selected_classes" id="selected_classes"
+                                       placeholder="Например: person, car, dog, cat">
+                                <small class="text-muted">Оставьте пустым для поиска всех объектов</small>
+                            </div>
+
+                            <button type="submit" class="btn btn-outline-success w-100 mt-2">
+                                Найти объекты
+                            </button>
+
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card shadow-sm p-2 text-center">
+                        <h6><strong>Примеры использования:</strong></h6>
+                        <p><strong>Поиск только людей и машин:</strong> person, car</p>
+                        <p><strong>Поиск животных:</strong> dog, cat, bird, horse</p>
+                        <p><strong>Высокая точность:</strong> установите порог 70%</p>
+                        <p><strong>Больше объектов:</strong> установите порог 30%</p>
+                    </div>
+                </div>
+            </div>
+
+{% endblock %}

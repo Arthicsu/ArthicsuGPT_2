@@ -27,6 +27,23 @@ header {
     text-align: center;
 }
 
+.classes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 5px;
+    margin: 10px 0;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.class-item {
+    display: flex;
+    align-items: center;
+}
+
 .container {
     max-width: 1000px;
 }

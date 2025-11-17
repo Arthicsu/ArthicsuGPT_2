@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mb-5">
+    <h2 class="my-heading my-4 text-center">Результаты</h2>
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-7">
+            <div class="card p-4 shadow-sm">
+                <div class="settings-info mb-4">
+                    <h4>Использованные настройки</h4>
+                    <p><strong>Порог уверенности:</strong> {{ used_threshold }}%</p>
+                    <p><strong>Искомые классы:</strong> {{ used_classes }}</p>
+                </div>
+
+                <div class="success mb-4">
+                    Найдено объектов: <strong>{{ total_detected }}</strong>
+                </div>
+
+                {% if detected_objects %}
+                <div class="color-legend mb-4">
+                    <h5><strong>Легенда цветов:</strong></h5>
+
+                    <div class="row g-2">
+                        {% set unique_classes = [] %}
+                        {% for obj in detected_objects %}
+                            {% if obj.class_name not in unique_classes %}
+                                {% set _ = unique_classes.append(obj.class_name) %}
+                                <div class="col-auto">
+                                    <div class="d-flex align-items-center border rounded px-2 py-1">
+                                        <div class="color-box me-2"
+                                             style="width:16px;height:16px;
+                                             background-color: rgb({{ obj.color[2] }}, {{ obj.color[1] }}, {{ obj.color[0] }});">
+                                        </div>
+                                        {{ obj.class_name }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                </div>
+                {% endif %}
+
+                <!-- Изображения -->
+                <div class="row images-container text-center mb-4 g-4">
+                    <div class="col-12">
+                        <h5>* Оригинальное изображение</h5>
+                        <img src="{{ original_image_url }}" class="img-fluid rounded border" alt="Оригинальное изображение">
+                    </div>
+
+                    <div class="col-12">
+                        <h5>* Результат детектирования</h5>
+                        <img src="{{ image_url }}" class="img-fluid rounded border" alt="Результат детектирования">
+                    </div>
+                </div>
+
+                <!-- Кнопка -->
+                <a href="/" class="btn btn-outline-success w-100">
+                    Вернуться к форме
+                </a>
+
+            </div>
+        </div>
+
+        <!-- Правая колонка -->
+        <div class="col-md-5">
+            <div class="card p-4 shadow-sm">
+
+                {% if class_stats %}
+                <div class="stats mb-4">
+                    <h5>Статистика по классам:</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for class_name, count in class_stats.items() %}
+                            <span class="badge bg-secondary">
+                                {{ class_name }}: {{ count }}
+                            </span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Детали объектов -->
+                {% if detected_objects %}
+                <div class="objects-list">
+                    <h5>Детали найденных объектов:</h5>
+                    <div class="list-group mt-3">
+                        {% for obj in detected_objects %}
+                        <div class="list-group-item">
+                            <strong>{{ obj.class_name }}</strong>
+                            — уверенность: <strong>{{ (obj.score * 100)|round(1) }}%</strong>
+                            — координаты: ({{ obj.box[0] }}, {{ obj.box[1] }}) —
+                            ({{ obj.box[2] }}, {{ obj.box[3] }})
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-warning text-center">
+                    (!) Объекты не найдены.<br>
+                    Попробуйте уменьшить порог уверенности или выбрать другие классы.
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
