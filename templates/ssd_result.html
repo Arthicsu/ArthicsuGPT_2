@@ -56,9 +56,14 @@
                 </div>
 
                 <!-- Кнопка -->
-                <a href="/" class="btn btn-outline-success w-100">
-                    Вернуться к форме
-                </a>
+                <div class="d-flex gap-3">
+                    <a href="/" class="btn btn-outline-success w-100">
+                        Вернуться к форме
+                    </a>
+                    <a href="/stats" class="btn btn-outline-success w-100">
+                        Дополнительная статистика
+                    </a>
+                </div>
 
             </div>
         </div>
@@ -101,10 +106,13 @@
                     Попробуйте уменьшить порог уверенности или выбрать другие классы.
                 </div>
                 {% endif %}
-
+                <div class="mt-3">
+                    <a href="{{ report_url }}" class="btn btn-success" download>
+                        Сохранить отчет в JSON
+                    </a>
+                </div>
             </div>
         </div>
-
     </div>
 </div>
 

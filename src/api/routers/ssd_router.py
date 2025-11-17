@@ -3,9 +3,6 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 import cv2
 import tensorflow as tf
-from tensorflow import keras
-from keras.preprocessing import image
-from keras.applications.mobilenet_v2 import preprocess_input
 
 from PIL import Image
 import numpy as np
@@ -60,6 +57,7 @@ async def show_form(request: Request):
         "title": "Распознавание спутниковых снимков"
     })
 
+detection_history = []
 @router.post("/predict", response_class=HTMLResponse)
 async def predict_display(
         request: Request,
@@ -169,6 +167,22 @@ async def predict_display(
             class_name = obj["class_name"]
             class_stats[class_name] = class_stats.get(class_name, 0) + 1
 
+        detection_history.append({
+            'objects': detected_objects,
+            'total_detected': len(detected_objects),
+        })
+
+        reports_dir = "static/reports"
+        os.makedirs(reports_dir, exist_ok=True)
+        report_filename = f"report_{len(detected_objects)}.json"
+        report_data = {
+            "detected_objects": detected_objects,
+            "class_distribution": class_stats
+        }
+
+        with open(f"static/reports/{report_filename}", 'w', encoding='utf-8') as f:
+            json.dump(report_data, f, ensure_ascii=False, indent=2)
+
         return templates.TemplateResponse("ssd_result.html", {
             "request": request,
             "detected_objects": detected_objects,
@@ -181,7 +195,39 @@ async def predict_display(
             "settings": {
                 "threshold": threshold,
                 "selected_classes": selected_classes
-            }
+            },
+            "report_url": f"/static/reports/{report_filename}"
         })
     except Exception as e:
         return templates.TemplateResponse("error.html", {"request": request, "error": str(e), "status_code": 500})
+
+@router.get("/stats", response_class=HTMLResponse)
+async def show_stats(request: Request):
+    total_objects = 0
+    class_distribution = {}
+
+    for detection in detection_history:
+        total_objects += detection['total_detected']
+        for obj in detection['objects']:
+            class_name = obj['class_name']
+            if class_name in class_distribution:
+                class_distribution[class_name] += 1
+            else:
+                class_distribution[class_name] = 1
+
+    avg_obj = total_objects / 2
+
+    top_objects = []
+    for class_name, count in class_distribution.items():
+        top_objects.append((class_name, count))
+    top_objects.sort(key=lambda x: x[1], reverse=True)
+    top_objects = top_objects[:5]
+    detection_history.clear()
+
+    return templates.TemplateResponse("ssd_stats.html", {
+        "request": request,
+        'total_objects': total_objects,
+        'avg_obj': avg_obj,
+        'top_objects': top_objects,
+        'class_distribution': class_distribution
+    })
